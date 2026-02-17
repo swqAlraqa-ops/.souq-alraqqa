@@ -3,112 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سوق الرقة | دخول الأعضاء</title>
+    <title>سوق الرقة</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;700&display=swap');
-        body { font-family: 'Noto Sans Arabic', sans-serif; background: #f0f4f8; }
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 100; items-center; justify-content: center; }
-        .modal.active { display: flex; }
+        body { font-family: 'Noto Sans Arabic', sans-serif; background: #f8fafc; }
+        .page { display: none; }
+        .active { display: block; }
     </style>
 </head>
 <body>
 
-    <div id="login-screen" class="fixed inset-0 bg-[#002f34] z-[200] flex flex-col items-center justify-center p-6">
-        <div class="bg-white w-full max-w-sm rounded-3xl p-8 shadow-2xl text-center">
-            <h1 class="text-2xl font-bold text-[#002f34] mb-6">مرحباً بك في سوق الرقة</h1>
-            <p class="text-gray-500 mb-8 text-sm">يرجى اختيار نوع الدخول للمتابعة</p>
-            
-            <button onclick="enterAs('user')" class="w-full bg-gray-100 text-gray-700 py-4 rounded-xl font-bold mb-4 border-2 border-transparent hover:border-blue-500 transition">
-                <i class="fas fa-user ml-2"></i> دخول كمستخدم (تصفح مجاني)
-            </button>
-            
-            <button onclick="showMerchantVerify()" class="w-full bg-orange-500 text-white py-4 rounded-xl font-bold shadow-lg hover:bg-orange-600 transition">
-                <i class="fas fa-store ml-2"></i> دخول كتاجر (إعلانات ممولة)
-            </button>
+    <header style="background-color: #002f34;" class="text-white p-4 sticky top-0 z-50 shadow-lg">
+        <div class="flex justify-between items-center">
+            <h1 class="text-xl font-bold">سوق الرقة</h1>
+            <i class="fas fa-headset text-xl" onclick="alert('تواصل مع الدعم: +963935423267')"></i>
         </div>
-    </div>
+    </header>
 
-    <div id="verify-modal" class="modal">
-        <div class="bg-white w-[90%] max-w-sm rounded-2xl p-6 shadow-2xl relative">
-            <h3 class="text-lg font-bold mb-4 text-center">التحقق من الدفع</h3>
-            <p class="text-xs text-gray-500 mb-4 text-center">أدخل رقم الفاتورة المكون من 6 أرقام والذي استلمته من الدعم الفني بعد السداد.</p>
-            
-            <input type="text" id="invoice-num" placeholder="رقم الفاتورة (مثلاً: 123456)" class="w-full border-2 border-gray-200 p-3 rounded-lg text-center mb-4 focus:border-orange-500 outline-none">
-            
-            <button onclick="checkInvoice()" class="w-full bg-[#002f34] text-white py-3 rounded-lg font-bold mb-3">تأكيد الدخول</button>
-            
-            <div class="text-center">
-                <p class="text-xs text-gray-400 mb-2">ليس لديك رقم فاتورة؟</p>
-                <a href="https://wa.me/963935423267?text=أريد تسديد رسوم التاجر والحصول على رقم فاتورة" class="text-orange-600 text-sm font-bold underline">اطلبها الآن عبر واتساب (10$)</a>
-            </div>
-            
-            <button onclick="hideMerchantVerify()" class="absolute top-2 left-2 text-gray-400"><i class="fas fa-times"></i></button>
-        </div>
-    </div>
-
-    <div id="main-app" class="hidden">
-        <header class="bg-[#002f34] text-white p-4 sticky top-0 flex justify-between items-center">
-            <span id="user-type-tag" class="text-[10px] bg-orange-500 px-2 py-1 rounded"></span>
-            <h1 class="font-bold">سوق الرقة المفتوح</h1>
-            <i class="fas fa-sign-out-alt" onclick="location.reload()"></i>
-        </header>
-        
-        <div class="p-4">
-            <div id="merchant-tools" class="hidden bg-orange-50 border border-orange-200 p-4 rounded-xl mb-4">
-                <p class="text-orange-800 text-xs font-bold"><i class="fas fa-star ml-1"></i> لوحة تحكم التاجر نشطة</p>
-                <button class="mt-2 w-full bg-orange-500 text-white text-xs py-2 rounded">أضف إعلان تجاري جديد</button>
-            </div>
-            
-            <h2 class="font-bold mb-4">أحدث العروض في المدينة</h2>
+    <div id="login-section" class="p-6 text-center">
+        <div class="bg-white p-8 rounded-3xl shadow-xl border border-gray-100 mt-10">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">أهلاً بك في سوق الرقة</h2>
             <div class="space-y-4">
-                <div class="bg-white p-4 rounded-xl shadow-sm flex gap-4 border border-gray-100">
-                    <div class="w-24 h-24 bg-gray-200 rounded-lg flex items-center justify-center text-gray-400 text-xs text-center p-1">بانتظار إعلانك الأول</div>
-                    <div class="flex-1">
-                        <div class="h-4 bg-gray-100 rounded w-3/4 mb-2"></div>
-                        <div class="h-4 bg-gray-100 rounded w-1/2 mb-4"></div>
-                        <div class="flex justify-between items-center">
-                            <span class="text-green-600 font-bold">---</span>
-                            <span class="text-[10px] text-gray-400">الرقة</span>
-                        </div>
-                    </div>
-                </div>
+                <button onclick="enterApp('user')" class="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold shadow-md">
+                    <i class="fas fa-users ml-2"></i> دخول كمستخدم (مجاني)
+                </button>
+                <button onclick="showMerchantPrompt()" class="w-full bg-orange-500 text-white py-4 rounded-2xl font-bold shadow-md">
+                    <i class="fas fa-store ml-2"></i> دخول كتاجر (10 دولار)
+                </button>
             </div>
         </div>
     </div>
+
+    <main id="main-app" class="page p-4">
+        <div class="bg-green-100 p-4 rounded-xl mb-4 text-green-800 text-sm font-bold text-center border border-green-200">
+            تم تسجيل الدخول بنجاح إلى سوق الرقة
+        </div>
+        
+        <h3 class="font-bold mb-4 text-gray-700">أقسام السوق</h3>
+        <div class="grid grid-cols-3 gap-3">
+            <div class="bg-white p-4 rounded-xl shadow-sm text-center border border-gray-100">
+                <i class="fas fa-car text-blue-500 text-2xl mb-2"></i>
+                <p class="text-xs font-bold">سيارات</p>
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-sm text-center border border-gray-100">
+                <i class="fas fa-sheep text-green-500 text-2xl mb-2"></i>
+                <p class="text-xs font-bold">مواشي</p>
+            </div>
+            <div class="bg-white p-4 rounded-xl shadow-sm text-center border border-gray-100">
+                <i class="fas fa-home text-red-500 text-2xl mb-2"></i>
+                <p class="text-xs font-bold">عقارات</p>
+            </div>
+        </div>
+    </main>
 
     <script>
-        function enterAs(role) {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('main-app').classList.remove('hidden');
-            const tag = document.getElementById('user-type-tag');
-            
-            if(role === 'user') {
-                tag.innerText = "حساب مستخدم";
-                tag.className = "text-[10px] bg-blue-500 px-2 py-1 rounded";
+        function enterApp(role) {
+            document.getElementById('login-section').classList.add('page');
+            document.getElementById('main-app').classList.add('active');
+        }
+
+        function showMerchantPrompt() {
+            let invoice = prompt("يرجى إدخال رقم الفاتورة (أو تواصل مع واتساب للحصول عليه):");
+            if (invoice && invoice.length > 3) {
+                alert("تم التحقق من الفاتورة. أهلاً بك يا تاجر!");
+                enterApp('merchant');
             } else {
-                tag.innerText = "حساب تاجر";
-                document.getElementById('merchant-tools').classList.remove('hidden');
-            }
-        }
-
-        function showMerchantVerify() {
-            document.getElementById('verify-modal').classList.add('active');
-        }
-
-        function hideMerchantVerify() {
-            document.getElementById('verify-modal').classList.remove('active');
-        }
-
-        function checkInvoice() {
-            const num = document.getElementById('invoice-num').value;
-            if(num.length >= 5) {
-                alert("تم التحقق بنجاح! أهلاً بك يا تاجر الرقة.");
-                hideMerchantVerify();
-                enterAs('merchant');
-            } else {
-                alert("رقم الفاتورة غير صحيح. يرجى التأكد من الدفع أولاً عبر واتساب.");
+                alert("رقم الفاتورة غير صحيح. يرجى التواصل مع الدعم.");
+                window.location.href = "https://wa.me/963935423267?text=أريد_رقم_فاتورة_للتاجر";
             }
         }
     </script>
