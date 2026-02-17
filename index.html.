@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سوق الرقة المفتوح | النسخة الرسمية</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+        body { font-family: 'Tajawal', sans-serif; background-color: #f0f2f5; margin: 0; padding-bottom: 80px; }
+        .page { display: none; }
+        .page.active { display: block; animation: fadeIn 0.3s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body>
+
+    <header class="bg-[#004a99] text-white p-4 sticky top-0 z-[1000] shadow-md flex items-center justify-between">
+        <h1 class="text-xl font-bold cursor-pointer" onclick="window.location.reload()">سوق الرقة</h1>
+        <div class="flex-1 mx-4">
+            <input type="text" placeholder="ابحث عن سيارات، مواشي، عقارات..." class="w-full py-2 px-3 rounded-lg text-black text-sm outline-none shadow-inner">
+        </div>
+        <i class="fas fa-bell text-xl"></i>
+    </header>
+
+    <main id="home" class="page active">
+        <div class="bg-white py-4 flex gap-6 px-4 overflow-x-auto border-b no-scrollbar">
+            <div onclick="filterAds('سيارات')" class="flex flex-col items-center min-w-[75px] cursor-pointer active:scale-90 transition">
+                <div class="bg-blue-100 w-14 h-14 rounded-full flex items-center justify-center mb-1 text-blue-600 shadow-sm"><i class="fas fa-car text-xl"></i></div>
+                <span class="text-[11px] font-bold text-gray-700">سيارات</span>
+            </div>
+            <div onclick="filterAds('مواشي')" class="flex flex-col items-center min-w-[75px] cursor-pointer active:scale-90 transition">
+                <div class="bg-orange-100 w-14 h-14 rounded-full flex items-center justify-center mb-1 text-orange-600 shadow-sm"><i class="fas fa-cow text-xl"></i></div>
+                <span class="text-[11px] font-bold text-gray-700">مواشي</span>
+            </div>
+            <div onclick="filterAds('عقارات')" class="flex flex-col items-center min-w-[75px] cursor-pointer active:scale-90 transition">
+                <div class="bg-green-100 w-14 h-14 rounded-full flex items-center justify-center mb-1 text-green-600 shadow-sm"><i class="fas fa-home text-xl"></i></div>
+                <span class="text-[11px] font-bold text-gray-700">عقارات</span>
+            </div>
+            <div onclick="filterAds('موبايلات')" class="flex flex-col items-center min-w-[75px] cursor-pointer active:scale-90 transition">
+                <div class="bg-purple-100 w-14 h-14 rounded-full flex items-center justify-center mb-1 text-purple-600 shadow-sm"><i class="fas fa-mobile-alt text-xl"></i></div>
+                <span class="text-[11px] font-bold text-gray-700">موبايلات</span>
+            </div>
+        </div>
+
+        <div class="p-4">
+            <h3 id="sectionTitle" class="font-bold text-gray-800 mb-4 border-r-4 border-orange-500 pr-2">أحدث الإعلانات في الرقة</h3>
+            <div id="adsGrid" class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                </div>
+        </div>
+    </main>
+
+    <div id="detailsPage" class="page fixed inset-0 bg-white z-[2000] overflow-y-auto">
+        <div class="p-4 border-b flex items-center gap-4 bg-white sticky top-0 z-10 shadow-sm">
+            <i class="fas fa-arrow-right text-xl text-blue-800 cursor-pointer" onclick="closeDetails()"></i>
+            <span class="font-bold">تفاصيل العرض</span>
+        </div>
+        <img id="detImg" class="w-full h-80 object-cover shadow-inner">
+        <div class="p-5">
+            <p id="detPrice" class="text-3xl font-black text-blue-700 mb-2"></p>
+            <h1 id="detTitle" class="text-xl font-bold mb-4"></h1>
+            <div class="flex items-center text-gray-500 mb-6 bg-blue-50 p-3 rounded-lg">
+                <i class="fas fa-map-marker-alt ml-2 text-red-500"></i> <span id="detLoc"></span>
+            </div>
+            <div class="border-t pt-4">
+                <h4 class="font-bold mb-2">وصف الإعلان:</h4>
+                <p id="detDesc" class="text-gray-600 leading-relaxed"></p>
+            </div>
+        </div>
+        <div class="fixed bottom-0 left-0 right-0 p-4 bg-white border-t flex gap-3 z-20 shadow-2xl">
+            <a id="callBtn" class="flex-1 bg-green-600 text-white py-4 rounded-xl font-bold text-center flex items-center justify-center gap-2">
+                <i class="fas fa-phone-alt"></i> اتصال
+            </a>
+            <a id="waBtn" target="_blank" class="flex-1 bg-[#25D366] text-white py-4 rounded-xl font-bold text-center flex items-center justify-center gap-2">
+                <i class="fab fa-whatsapp text-2xl"></i> واتساب
+            </a>
+        </div>
+    </div>
+
+    <nav class="fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around items-center p-3 z-[1500] shadow-lg">
+        <div onclick="window.location.reload()" class="text-center cursor-pointer text-blue-700"><i class="fas fa-home text-xl"></i><br><span class="text-[10px]">الرئيسية</span></div>
+        <div onclick="alert('تذكر: يرجى تسجيل الدخول أولاً')" class="text-center cursor-pointer text-orange-500"><i class="fas fa-plus-circle text-2xl"></i><br><span class="text-[10px]">أضف إعلان</span></div>
+        <div class="text-center cursor-pointer text-gray-400"><i class="fas fa-user text-xl"></i><br><span class="text-[10px]">حسابي</span></div>
+    </nav>
+
+    <script>
+        // بيانات الإعلانات (نظامية ومنوعة)
+        const ads = [
+            { id: 1, cat: 'سيارات', title: 'تويوتا هايلوكس دبل 2022 وكالة', price: '125,000 ريال', loc: 'الرقة - المشلب', img: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?w=500', phone: '0931234567', desc: 'سيارة شبه جديدة، ماشية 15 ألف كم، ديزل، غمارتين، فحص كامل.' },
+            { id: 2, cat: 'مواشي', title: 'خراف نعيمي طيبة (تربية مزارعنا)', price: '1,850 ريال', loc: 'الرقة - سوق الغنم', img: 'https://images.unsplash.com/photo-1484557985045-edf25e08da73?w=500', phone: '0937654321', desc: 'غنم نعيمي أصيل، أوزان ممتازة، مناسبة للذبايح والقنية.' },
+            { id: 3, cat: 'عقارات', title: 'شقة 3 غرف وصالة - حي الثكنة', price: '380,000 ريال', loc: 'الرقة - حي الثكنة', img: 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=500', phone: '0930009998', desc: 'طابق ثاني، إطلالة رائعة، جاهزة للسكن، كسوة ديلوكس.' },
+            { id: 4, cat: 'سيارات', title: 'هيونداي النترا 2018 كرت', price: '54,000 ريال', loc: 'الرقة - حي الرميلة', img: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=500', phone: '0933334445', desc: 'سيارة استخدام نظيف جداً، بصمة، فتحة سقف، صيانة دورية.' },
+            { id: 5, cat: 'موبايلات', title: 'آيفون 14 برو ماكس 256GB', price: '3,200 ريال', loc: 'الرقة - تل أبيض', img: 'https://images.unsplash.com/photo-1664478546384-d97f3c04e286?w=500', phone: '0935556667', desc: 'الجهاز كرتونة، بطارية 100%، لون ليلكي مميز، مع الكفالة.' },
+            { id: 6, cat: 'مواشي', title: 'فحل نعيمي ضخم للتربية', price: '4,200 ريال', loc: 'الرقة - مفرق الجزرة', img: 'https://images.unsplash.com/photo-1511117833452-4778b3bd057c?w=500', phone: '0931112220', desc: 'فحل نعيمي أصيل، جرم ضخم وارتفاع طيب، مناسب لتحسين السلالة.' }
+        ];
+
+        function render(items) {
+            const grid = document.getElementById('adsGrid');
+            grid.innerHTML = items.map(ad => `
+                <div onclick="openAd(${ad.id})" class="bg-white rounded-xl shadow-sm border overflow-hidden cursor-pointer active:scale-95 transition">
+                    <img src="${ad.img}" class="w-full h-36 object-cover">
+                    <div class="p-3">
+                        <h4 class="text-[13px] font-bold truncate text-gray-800">${ad.title}</h4>
+                        <p class="text-blue-700 font-black text-sm mt-1">${ad.price}</p>
+                        <p class="text-[10px] text-gray-400 mt-1"><i class="fas fa-map-marker-alt"></i> ${ad.loc}</p>
+                    </div>
+                </div>`).join('');
+        }
+
+        function filterAds(cat) {
+            document.getElementById('sectionTitle').innerText = 'قسم ' + cat;
+            render(ads.filter(a => a.cat === cat));
+            window.scrollTo(0,0);
+        }
+
+        function openAd(id) {
+            const ad = ads.find(a => a.id === id);
+            document.getElementById('detImg').src = ad.img;
+            document.getElementById('detTitle').innerText = ad.title;
+            document.getElementById('detPrice').innerText = ad.price;
+            document.getElementById('detLoc').innerText = ad.loc;
+            document.getElementById('detDesc').innerText = ad.desc;
+            document.getElementById('callBtn').href = 'tel:' + ad.phone;
+            document.getElementById('waBtn').href = 'https://wa.me/' + ad.phone + '?text=مرحبا، بخصوص إعلان: ' + ad.title;
+            document.getElementById('detailsPage').classList.add('active');
+        }
+
+        function closeDetails() { document.getElementById('detailsPage').classList.remove('active'); }
+
+        // تشغيل الموقع في البداية
+        render(ads);
+    </script>
+</body>
+</html>
